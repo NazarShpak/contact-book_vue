@@ -121,6 +121,7 @@ input::-webkit-inner-spin-button {
     font-size: 20px;
     line-height: 20px;
     right: -2px;
+    top: -23px;
     transition: all .5s;
   }
   &__btn-close:hover::before {

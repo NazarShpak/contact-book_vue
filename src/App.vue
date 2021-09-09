@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <all-contacts-page>
-    </all-contacts-page>
-<!--    <router-view></router-view>-->
+<!--    <about-contact-page></about-contact-page>-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import AllContactsPage from './pages/AllContactsPage.vue'
+// import AllContactsPage from './pages/AllContactsPage.vue'
+// import AboutContactPage from './pages/AboutContactPage.vue'
 
 export default {
   name: 'App',
   components: {
-    AllContactsPage
+    // AllContactsPage
+    // AboutContactPage
   }
 }
 </script>

@@ -6,11 +6,11 @@ export default new VueRouter({
   routes: [
     {
       path: "/",
-      name: "main",
+      name: "all-contacts",
       component: AllContactsPage
     },
     {
-      path: "/contact/",
+      path: "/contact/:contactName",
       name: "about-contact",
       component: AboutContactPage
     }

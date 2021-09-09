@@ -2,14 +2,11 @@
   <div class="all-contacts-page">
     <div class="container">
 
-      <h1
-          class="all-contacts-page__title"
-      >
+      <h1 class="all-contacts-page__title title">
         Книга контактів
       </h1>
 
       <div class="all-contacts-page__contacts">
-
         <h2 class="all-contacts-page__contacts-title">
           Всі контакти:
         </h2>
@@ -19,11 +16,14 @@
             v-for="(contact, index) in contacts"
             :key="index"
         >
-          <div
+
+          <router-link
               class="all-contacts-page__contact-info"
+              :to = "{ name: 'about-contact', params: {contactName: contact.name, contactIndex: index}}"
           >
             {{contact.name}}
-          </div>
+          </router-link>
+
           <div
               class="all-contacts-page__contact-btn"
               @click="showDeteleContactModalWindow(index)"
@@ -37,6 +37,7 @@
             class="modal-window"
             v-show="showDeleteModal"
             :index="indexOfDeleteContact"
+            :modal="modal"
             @hideDeleteContactModalWindow="hideDeleteContactModalWindow"
         >
         </delete-contact-modal-window>
@@ -78,6 +79,7 @@ export default {
       showDeleteModal: false,
       showAddModal: false,
       indexOfDeleteContact: null,
+      modal: "deleteContact"
     }
   },
   computed: {
@@ -86,9 +88,6 @@ export default {
     },
   },
   methods: {
-    test() {
-      console.log(this.contacts)
-    },
     showDeteleContactModalWindow(index) {
       this.showDeleteModal = true
       this.indexOfDeleteContact = index
@@ -107,13 +106,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  margin: 0 auto;
-  background-color: #2a2727;
-  width: 400px;
-  height: 500px;
-  border-radius: 15px;
-}
 .modal-window {
   position: absolute;
   top: 0;
@@ -121,14 +113,6 @@ export default {
 }
 .all-contacts-page {
   text-align: center;
-  &__title {
-    color: #fff;
-    font-size: 30px;
-    line-height: 30px;
-    font-weight: bold;
-    padding-top: 15px;
-    margin-bottom: 15px;
-  }
   &__contacts {
     background-color: #fff;
     height: 340px;
@@ -163,6 +147,9 @@ export default {
     width: 240px;
     cursor: pointer;
     transition: all .5s;
+    color: #2a2727;
+    text-decoration: none;
+    overflow: hidden;
   }
   &__contact-info:hover {
     transform: scale(1.04);

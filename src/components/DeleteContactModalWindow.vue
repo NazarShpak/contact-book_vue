@@ -1,8 +1,10 @@
 <template>
   <div class="delete-contact-modal-window">
     <div class="delete-contact-modal-window__block">
-      <h3 class="delete-contact-modal-window__title">
-        Видалити контакт?
+      <h3
+          class="delete-contact-modal-window__title"
+      >
+        {{ modal === "deleteContact" ? 'Видалити контакт?' : 'Видалити поле?' }}
       </h3>
       <button
           class="delete-contact-modal-window__btn btn-yes"
@@ -26,12 +28,41 @@ export default {
   props: {
     index: {
       type: Number
+    },
+    contact: {
+      type: Object
+    },
+    contactKey: {
+      type: String
+    },
+    contactIndex: {
+      type: Number
+    },
+    modal: {
+      type: String
+    }
+  },
+  computed: {
+    contactData() {
+      return [this.contactKey, this.contactIndex]
     }
   },
   methods: {
     deleteContact() {
-      this.$store.commit("deleteContact", this.index)
-      this.$emit('hideDeleteContactModalWindow')
+      if(this.modal === "deleteContact") {
+        this.$store.commit("deleteContact", this.index)
+        this.$emit('hideDeleteContactModalWindow')
+      } else {
+        if(Object.keys(this.contact).length === 1) {
+          this.$store.commit("deleteContactInfo", this.contactData)
+          this.$store.commit("deleteContact", this.contactIndex)
+          this.$emit('goToAllContactsPage')
+        } else {
+          this.$store.commit("deleteContactInfo", this.contactData)
+          this.$emit('hideDeleteContactModalWindow')
+        }
+      }
+
     },
     hideDeleteContactModalWindow() {
       this.$emit('hideDeleteContactModalWindow')
