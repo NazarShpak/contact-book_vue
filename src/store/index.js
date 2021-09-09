@@ -39,12 +39,16 @@ export default new Vuex.Store({
     deleteContact(state, payload) {
       state.contacts.splice(payload, 1)
       console.log(state.contacts)
+    },
+    addNewContact(state, payload) {
+      state.contacts.push(payload)
     }
   },
   actions: {
-    async deleteContact({ commit }, contact) {
+    async changeContact({ commit }, contact) {
       try {
         commit('deleteContact', contact)
+        commit('addNewContact', contact)
       } catch (error) {
         console.log(error)
       }

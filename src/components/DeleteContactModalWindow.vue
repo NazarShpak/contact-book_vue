@@ -12,7 +12,7 @@
       </button>
       <button
           class="delete-contact-modal-window__btn btn-no"
-          @click="closeDeleteModalWindow"
+          @click="hideDeleteContactModalWindow"
       >
         Ні
       </button>
@@ -31,10 +31,10 @@ export default {
   methods: {
     deleteContact() {
       this.$store.commit("deleteContact", this.index)
-      this.$emit('closeDeleteModalWindow')
+      this.$emit('hideDeleteContactModalWindow')
     },
-    closeDeleteModalWindow() {
-      this.$emit('closeDeleteModalWindow')
+    hideDeleteContactModalWindow() {
+      this.$emit('hideDeleteContactModalWindow')
     }
   }
 }

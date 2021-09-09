@@ -1,11 +1,13 @@
 <template>
   <div class="all-contacts-page">
     <div class="container">
-      <div
+
+      <h1
           class="all-contacts-page__title"
       >
         Contact book
-      </div>
+      </h1>
+
       <div class="all-contacts-page__contacts">
 
         <div
@@ -20,24 +22,36 @@
           </div>
           <div
               class="all-contacts-page__contact-btn"
-              @click="showDeteleModalWindow(index)"
+              @click="showDeteleContactModalWindow(index)"
           >
           </div>
         </div>
 
+        <!-- Delete Contact Modal Window -->
+
         <delete-contact-modal-window
-            v-show="showDeleteModal"
             class="modal-window"
+            v-show="showDeleteModal"
             :index="indexOfDeleteContact"
-            @closeDeleteModalWindow="closeDeleteModalWindow"
+            @hideDeleteContactModalWindow="hideDeleteContactModalWindow"
         >
         </delete-contact-modal-window>
 
+        <!-- Add New Contact Modal Window -->
 
+        <add-contact-modal-window
+            class="modal-window"
+            v-show="showAddModal"
+            @hideAddContactModalWindow="hideAddContactModalWindow"
+        >
+        </add-contact-modal-window>
       </div>
+
       <button
           class="all-contacts-page__btn"
-          @click="test()"
+          @click="showAddContactModalWindow"
+          :disabled = 'showAddModal'
+          :class = "showAddModal ? 'all-contacts-page__btn-disable' : ''"
       >
         + Додати новий контакт
       </button>
@@ -47,33 +61,42 @@
 
 <script>
 import DeleteContactModalWindow from "../components/DeleteContactModalWindow.vue";
+import AddContactModalWindow from "../components/AddContactModalWindow.vue";
 
 export default {
   name: "AllContactsPage.vue",
   components: {
-    DeleteContactModalWindow
+    DeleteContactModalWindow,
+    AddContactModalWindow
   },
   data() {
     return {
       showDeleteModal: false,
+      showAddModal: false,
       indexOfDeleteContact: null,
     }
   },
   computed: {
     contacts() {
       return this.$store.state.contacts
-    }
+    },
   },
   methods: {
     test() {
       console.log(this.contacts)
     },
-    showDeteleModalWindow(index) {
+    showDeteleContactModalWindow(index) {
       this.showDeleteModal = true
       this.indexOfDeleteContact = index
     },
-    closeDeleteModalWindow() {
+    hideDeleteContactModalWindow() {
       this.showDeleteModal = false
+    },
+    showAddContactModalWindow() {
+      this.showAddModal = true
+    },
+    hideAddContactModalWindow() {
+      this.showAddModal = false
     }
   }
 }
@@ -168,6 +191,13 @@ export default {
   &__btn:hover {
     transform:scale(1.05);
     transition: all .5s;
+  }
+  &__btn-disable {
+    cursor: auto;
+    background-color: #69a854;
+  }
+  &__btn-disable:hover {
+    transform:scale(1);
   }
 }
 </style>
