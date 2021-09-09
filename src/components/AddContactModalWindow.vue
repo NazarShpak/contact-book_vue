@@ -4,6 +4,11 @@
       <h3 class="add-contact-modal-window__title">
         Додати новий контакт
       </h3>
+      <span
+          class="add-contact-modal-window__btn-close"
+          @click="hideAddContactModalWindow"
+      >
+      </span>
       <input
           class = "add-contact-modal-window__input"
           type = "text"
@@ -59,6 +64,11 @@ export default {
       this.name = ''
       this.phone = ''
       this.$emit('hideAddContactModalWindow')
+    },
+    hideAddContactModalWindow() {
+      this.name = ''
+      this.phone = ''
+      this.$emit('hideAddContactModalWindow')
     }
   }
 }
@@ -82,6 +92,7 @@ input::-webkit-inner-spin-button {
   height: 340px;
   width: 300px;
   background-color: #2a2727;
+  position: relative;
   &__block {
     width: 300px;
     height: 225px;
@@ -94,6 +105,28 @@ input::-webkit-inner-spin-button {
     font-size: 22px;
     line-height: 22px;
     color: #2a2727;
+  }
+  &__btn-close {
+    position: absolute;
+    top: 29px;
+    right: 11px;
+  }
+  &__btn-close::before {
+    cursor: pointer;
+    position: absolute;
+    content: "\f00d";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #2a2727;
+    font-size: 20px;
+    line-height: 20px;
+    right: -2px;
+    transition: all .5s;
+  }
+  &__btn-close:hover::before {
+    transform:scale(1.1);
+    transition: all .5s;
+    color: #e50e0e;
   }
   &__input {
     background-color: #2a2727;

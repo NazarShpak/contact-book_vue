@@ -5,10 +5,14 @@
       <h1
           class="all-contacts-page__title"
       >
-        Contact book
+        Книга контактів
       </h1>
 
       <div class="all-contacts-page__contacts">
+
+        <h2 class="all-contacts-page__contacts-title">
+          Всі контакти:
+        </h2>
 
         <div
             class="all-contacts-page__contact"
@@ -132,6 +136,14 @@ export default {
     margin: 0 auto 20px;
     border-radius: 14px;
     position: relative;
+  }
+  &__contacts-title {
+    text-align: left;
+    color: #2a2727;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin: 0;
   }
   &__contact {
     margin: 4px auto;

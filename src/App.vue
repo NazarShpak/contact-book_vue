@@ -2,6 +2,7 @@
   <div id="app">
     <all-contacts-page>
     </all-contacts-page>
+<!--    <router-view></router-view>-->
   </div>
 </template>
 
