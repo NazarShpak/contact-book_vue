@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <all-contacts-page></all-contacts-page>
+    <all-contacts-page>
+    </all-contacts-page>
   </div>
 </template>
 

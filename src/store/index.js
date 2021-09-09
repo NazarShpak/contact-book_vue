@@ -26,6 +26,7 @@ export default new Vuex.Store({
         'phone': '380501443263',
         'e-mail': 'Dimonchik_1997@gmail.com'
       },
+
     ],
     contactsCopy: [],
   },
@@ -35,16 +36,18 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-
+    deleteContact(state, payload) {
+      state.contacts.splice(payload, 1)
+      console.log(state.contacts)
+    }
   },
   actions: {
-    // async loadMovie({ commit }, movie) {
-    //   try {
-    //     commit('addMovie', movie)
-    //     commit('deleteMovie', movie)
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
+    async deleteContact({ commit }, contact) {
+      try {
+        commit('deleteContact', contact)
+      } catch (error) {
+        console.log(error)
+      }
+    },
   }
 })
