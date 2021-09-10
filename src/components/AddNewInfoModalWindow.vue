@@ -1,12 +1,11 @@
 <template>
   <div class="add-new-info-modal-window">
-    <div class="add-new-info-modal-window__block">
+    <div class="block">
       <h3 class="add-new-info-modal-window__title">
         Додати нове поле
       </h3>
       <span
           class="add-new-info-modal-window__btn-close"
-
       >
       </span>
       <input
@@ -91,8 +90,11 @@ export default {
   },
   methods: {
     addNewInfo() {
-      this.$store.commit("addNewCInfo", this.getNewCouple)
+      this.$store.commit("addNewInfo", this.getNewCouple)
       this.$emit('hideAddNewInfoModalWindow')
+      this.cleanInputs()
+    },
+    cleanInputs() {
       this.contactKey = ''
       this.contactValue = ''
     }
@@ -101,30 +103,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input {
-  outline:none;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 ::placeholder {
   color: #fff;
   font-size: 14px;
   line-height: 14px;
+}
+.block {
+  height: 300px;
 }
 .add-new-info-modal-window {
   height: 340px;
   width: 300px;
   background-color: #2a2727;
   position: relative;
-  &__block {
-    width: 300px;
-    height: 300px;
-    background-color: #ffffff;
-    border-radius: 15px;
-  }
   &__title {
     padding-top: 28px;
     margin-bottom: 35px;

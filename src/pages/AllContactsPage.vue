@@ -47,12 +47,12 @@
 
         <!-- Add New Contact Modal Window -->
 
-        <add-contact-modal-window
+        <add-new-contact-modal-window
             class="modal-window"
             v-show="showAddModal"
             @hideAddContactModalWindow="hideAddContactModalWindow"
         >
-        </add-contact-modal-window>
+        </add-new-contact-modal-window>
       </div>
 
       <button
@@ -69,13 +69,13 @@
 
 <script>
 import DeleteContactModalWindow from "../components/DeleteContactModalWindow.vue";
-import AddContactModalWindow from "../components/AddContactModalWindow.vue";
+import AddNewContactModalWindow from "../components/AddNewContactModalWindow.vue";
 
 export default {
   name: "AllContactsPage.vue",
   components: {
     DeleteContactModalWindow,
-    AddContactModalWindow
+    AddNewContactModalWindow
   },
   data() {
     return {
@@ -85,6 +85,9 @@ export default {
       modal: "deleteContact"
     }
   },
+  // created() {
+  //   this.$store.dispatch('sortContacts')
+  // },
   computed: {
     contacts() {
       return this.$store.state.contacts

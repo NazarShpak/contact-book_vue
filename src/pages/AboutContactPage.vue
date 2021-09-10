@@ -28,11 +28,12 @@
             </span>
             <span
                 class="contact-edit"
+                @click="showEditContactModalWindow(key)"
             >
             </span>
             <span
                 class="contact-delete"
-                @click="showDeteleContactModalWindow(key)"
+                @click="showDeleteContactModalWindow(key)"
             >
             </span>
           </div>
@@ -42,7 +43,7 @@
 
         <delete-contact-modal-window
             class="modal-window"
-            v-show="showDeleteModal"
+            v-if="showDeleteModal"
             :contact="contact"
             :contactKey="contactKey"
             :contactIndex="contactIndex"
@@ -52,11 +53,24 @@
         >
         </delete-contact-modal-window>
 
+        <!-- Edit Contact Modal Window-->
+
+        <edit-contact-modal-window
+            class="modal-window"
+            v-if="showEditModal"
+            :contact="contact"
+            :contactKey="contactKey"
+            :contactValue="contactValue"
+            :contactIndex="contactIndex"
+            @hideEditModalWindow="hideEditModalWindow"
+        >
+        </edit-contact-modal-window>
+
         <!-- Add New Info Modal Window -->
 
         <add-new-info-modal-window
             class="modal-window"
-            v-show="showAddInfoModal"
+            v-if="showAddInfoModal"
             :contactIndex="contactIndex"
             @hideAddNewInfoModalWindow="hideAddNewInfoModalWindow"
         >
@@ -85,6 +99,7 @@
 <script>
 import DeleteContactModalWindow from "../components/DeleteContactModalWindow.vue";
 import AddNewInfoModalWindow from "../components/AddNewInfoModalWindow.vue";
+import EditContactModalWindow from "../components/EditContactModalWindow.vue";
 
 export default {
   name: "AboutContactPage.vue",
@@ -92,14 +107,17 @@ export default {
     return {
       contact: '',
       contactKey: '',
+      contactValue: '',
       showDeleteModal: false,
       showAddInfoModal: false,
+      showEditModal: false,
       modal: "deleteContactInfo",
     }
   },
   components: {
     DeleteContactModalWindow,
     AddNewInfoModalWindow,
+    EditContactModalWindow
   },
   created() {
     this.contact = this.contacts.find(contact => contact.name == this.$route.params.contactName)
@@ -116,22 +134,30 @@ export default {
     },
   },
   methods: {
-    showDeteleContactModalWindow(key) {
+    showDeleteContactModalWindow(key) {
       this.showDeleteModal = true
       this.contactKey = key
     },
     hideDeleteContactModalWindow() {
       this.showDeleteModal = false
     },
-    goToAllContactsPage() {
-      this.$router.push ({name: 'all-contacts'})
+    showEditContactModalWindow( key) {
+      this.showEditModal = true
+      this.contactKey = key
+      this.contactValue = this.contact[key]
+    },
+    hideEditModalWindow() {
+      this.showEditModal = false
     },
     showAddNewInfoModalWindow() {
       this.showAddInfoModal = true
     },
     hideAddNewInfoModalWindow() {
       this.showAddInfoModal = false
-    }
+    },
+    goToAllContactsPage() {
+      this.$router.push ({name: 'all-contacts'})
+    },
   }
 }
 </script>

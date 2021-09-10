@@ -12,8 +12,8 @@ export default new Vuex.Store({
         'e-mail': 'hunter.nazik@gmail.com'
       },
       {
-
-
+        'name': 'Andriy',
+        'phone': '380686223254',
         'e-mail': 'savandriy@gmail.com'
       },
       {
@@ -27,13 +27,10 @@ export default new Vuex.Store({
         'e-mail': 'Dimonchik_1997@gmail.com'
       },
       {
-        'name': 'Nazar1',
         'phone': '380936862232',
         'e-mail': 'hunter.nazik@gmail.com'
       },
       {
-        'name': 'Andriy1',
-        'phone': '380686223254',
         'e-mail': 'savandriy@gmail.com'
       },
       {
@@ -76,9 +73,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    // sortContacts(state) {
+    //   let sortFunction = (a, b) => (a.name > b.name) ? 1 : ((b.name  > a.name) ? -1 : 0)
+    //   return state.contacts.sort(sortFunction)
+    // },
     deleteContact(state, payload) {
       state.contacts.splice(payload, 1)
-      console.log(state.contacts)
     },
     addNewContact(state, payload) {
       state.contacts.push(payload)
@@ -88,19 +88,31 @@ export default new Vuex.Store({
       delete contact[payload[0]]
       state.contacts.splice(payload[1], 1, contact)
     },
-    addNewCInfo(state, payload) {
+    addNewInfo(state, payload) {
       let contact = state.contacts[payload[2]]
       contact[payload[0]] = payload[1]
-      state.contacts.splice(payload[2], 1, contact)
+    },
+    editContactInfo(state, payload) {
+      let contact = state.contacts[payload[2]]
+      delete contact[payload[3]]
+      contact[payload[0]] = payload[1]
     }
   },
   actions: {
+    // async sortContacts({ commit }) {
+    //   try {
+    //       commit('sortContacts')
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },
     async changeContact({ commit }, contact) {
       try {
         commit('deleteContact', contact)
         commit('addNewContact', contact)
         commit('deleteContactInfo', contact)
-        commit('addNewCInfo', contact)
+        commit('addNewInfo', contact)
+        commit('editContactInfo', contact)
       } catch (error) {
         console.log(error)
       }

@@ -1,16 +1,16 @@
 <template>
-  <div class="add-contact-modal-window">
-    <div class="add-contact-modal-window__block">
-      <h3 class="add-contact-modal-window__title">
+  <div class="add-new-contact-modal-window">
+    <div class="block">
+      <h3 class="add-new-contact-modal-window__title">
         Додати новий контакт
       </h3>
       <span
-          class="add-contact-modal-window__btn-close"
+          class="add-new-contact-modal-window__btn-close"
           @click="hideAddContactModalWindow"
       >
       </span>
       <input
-          class = "add-contact-modal-window__input"
+          class = "add-new-contact-modal-window__input"
           type = "text"
           name = "contact-name"
           placeholder = "Ім'я"
@@ -18,7 +18,7 @@
           required
       >
       <input
-          class = "add-contact-modal-window__input"
+          class = "add-new-contact-modal-window__input"
           type = "number"
           name = "contact-phone"
           placeholder = "Номер телефону"
@@ -26,9 +26,9 @@
           required
       >
       <button
-          class="add-contact-modal-window__btn"
+          class="add-new-contact-modal-window__btn"
           :disabled = '!isComplete'
-          :class = "!isComplete ? 'add-contact-modal-window__btn-disable' : ''"
+          :class = "!isComplete ? 'add-new-contact-modal-window__btn-disable' : ''"
           @click="addNewContact"
       >
         + Додати контакт
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: "AddContactModalWindow.vue",
+  name: "AddNewContactModalWindow.vue",
   data() {
     return{
       name: '',
@@ -61,44 +61,35 @@ export default {
   methods: {
     addNewContact() {
       this.$store.commit("addNewContact", this.getNewContactData)
-      this.name = ''
-      this.phone = ''
+      this.cleanInputs()
       this.$emit('hideAddContactModalWindow')
     },
     hideAddContactModalWindow() {
+      this.cleanInputs()
+      this.$emit('hideAddContactModalWindow')
+    },
+    cleanInputs() {
       this.name = ''
       this.phone = ''
-      this.$emit('hideAddContactModalWindow')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-input {
-  outline:none;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 ::placeholder {
   color: #fff;
   font-size: 14px;
   line-height: 14px;
 }
-.add-contact-modal-window {
+.block {
+  height: 225px;
+}
+.add-new-contact-modal-window {
   height: 340px;
   width: 300px;
   background-color: #2a2727;
   position: relative;
-  &__block {
-    width: 300px;
-    height: 225px;
-    background-color: #ffffff;
-    border-radius: 15px;
-  }
   &__title {
     padding-top: 28px;
     margin-bottom: 35px;
@@ -121,7 +112,7 @@ input::-webkit-inner-spin-button {
     font-size: 20px;
     line-height: 20px;
     right: -2px;
-    top: -23px;
+    top: -2px;
     transition: all .5s;
   }
   &__btn-close:hover::before {

@@ -1,6 +1,6 @@
 <template>
   <div class="delete-contact-modal-window">
-    <div class="delete-contact-modal-window__block">
+    <div class="block">
       <h3
           class="delete-contact-modal-window__title"
       >
@@ -72,16 +72,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.block {
+  height: 120px;
+}
 .delete-contact-modal-window {
   height: 340px;
   width: 300px;
   background-color: #2a2727;
-  &__block {
-    width: 300px;
-    height: 120px;
-    background-color: #ffffff;
-    border-radius: 15px;
-  }
   &__title {
     padding-top: 15px;
     margin-bottom: 33px;
