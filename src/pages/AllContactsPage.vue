@@ -6,7 +6,10 @@
         Книга контактів
       </h1>
 
-      <div class="all-contacts-page__contacts">
+      <div
+          class="all-contacts-page__contacts"
+          :class="showDeleteModal || showAddModal ? 'all-contacts-page__contacts-hidden' : ''"
+      >
         <h2 class="all-contacts-page__contacts-title">
           Всі контакти:
         </h2>
@@ -21,7 +24,7 @@
               class="all-contacts-page__contact-info"
               :to = "{ name: 'about-contact', params: {contactName: contact.name, contactIndex: index}}"
           >
-            {{contact.name}}
+            {{ contact.name  ? contact.name :  contact.phone ? contact.phone : `Контакт № ${index + 1}` }}
           </router-link>
 
           <div
@@ -55,8 +58,8 @@
       <button
           class="all-contacts-page__btn"
           @click="showAddContactModalWindow"
-          :disabled = 'showAddModal'
-          :class = "showAddModal ? 'all-contacts-page__btn-disable' : ''"
+          :disabled='showAddModal'
+          :class="showAddModal ? 'all-contacts-page__btn-disable' : ''"
       >
         + Додати новий контакт
       </button>
@@ -106,10 +109,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  position: relative;
+}
 .modal-window {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 65px;
+  left: 50px;
 }
 .all-contacts-page {
   text-align: center;
@@ -118,21 +124,21 @@ export default {
     height: 340px;
     width: 300px;
     margin: 0 auto 20px;
-    border-radius: 14px;
-    position: relative;
+    overflow-y: scroll;
+  }
+  &__contacts-hidden {
+    overflow: hidden;
   }
   &__contacts-title {
     text-align: left;
     color: #2a2727;
-    padding-left: 15px;
-    padding-top: 10px;
-    padding-bottom: 5px;
+    padding: 10px 0 10px 15px;
     margin: 0;
   }
   &__contact {
     margin: 4px auto;
     height: 20px;
-    width: 280px;
+    width: 275px;
     border: 2px solid #2a2727;
     text-align: left;
     overflow: hidden;

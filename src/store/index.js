@@ -12,12 +12,52 @@ export default new Vuex.Store({
         'e-mail': 'hunter.nazik@gmail.com'
       },
       {
-        'name': 'Andriy',
-        'phone': '380686223254',
+
+
         'e-mail': 'savandriy@gmail.com'
       },
       {
         'name': 'Roma',
+        'phone': '380671443263',
+        'e-mail': 'roma_lesiv@gmail.com'
+      },
+      {
+        'name': 'Dima',
+        'phone': '380501443263',
+        'e-mail': 'Dimonchik_1997@gmail.com'
+      },
+      {
+        'name': 'Nazar1',
+        'phone': '380936862232',
+        'e-mail': 'hunter.nazik@gmail.com'
+      },
+      {
+        'name': 'Andriy1',
+        'phone': '380686223254',
+        'e-mail': 'savandriy@gmail.com'
+      },
+      {
+        'name': 'Roma1',
+        'phone': '380671443263',
+        'e-mail': 'roma_lesiv@gmail.com'
+      },
+      {
+        'name': 'Dima1',
+        'phone': '380501443263',
+        'e-mail': 'Dimonchik_1997@gmail.com'
+      },
+      {
+        'name': 'Nazar2',
+        'phone': '380936862232',
+        'e-mail': 'hunter.nazik@gmail.com'
+      },
+      {
+        'name': 'Andriy2',
+        'phone': '380686223254',
+        'e-mail': 'savandriy@gmail.com'
+      },
+      {
+        'name': 'Roma2',
         'phone': '380671443263',
         'e-mail': 'roma_lesiv@gmail.com'
       },
@@ -47,7 +87,11 @@ export default new Vuex.Store({
       let contact = state.contacts[payload[1]]
       delete contact[payload[0]]
       state.contacts.splice(payload[1], 1, contact)
-      console.log(payload[0])
+    },
+    addNewCInfo(state, payload) {
+      let contact = state.contacts[payload[2]]
+      contact[payload[0]] = payload[1]
+      state.contacts.splice(payload[2], 1, contact)
     }
   },
   actions: {
@@ -56,6 +100,7 @@ export default new Vuex.Store({
         commit('deleteContact', contact)
         commit('addNewContact', contact)
         commit('deleteContactInfo', contact)
+        commit('addNewCInfo', contact)
       } catch (error) {
         console.log(error)
       }

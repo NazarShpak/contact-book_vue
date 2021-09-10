@@ -38,6 +38,8 @@
           </div>
         </div>
 
+        <!-- Delete Contact Modal Window -->
+
         <delete-contact-modal-window
             class="modal-window"
             v-show="showDeleteModal"
@@ -49,6 +51,23 @@
             @goToAllContactsPage="goToAllContactsPage"
         >
         </delete-contact-modal-window>
+
+        <!-- Add New Info Modal Window -->
+
+        <add-new-info-modal-window
+            class="modal-window"
+            v-show="showAddInfoModal"
+            :contactIndex="contactIndex"
+            @hideAddNewInfoModalWindow="hideAddNewInfoModalWindow"
+        >
+        </add-new-info-modal-window>
+
+        <button
+            class="about-contact-page__contact-btn-add"
+            @click="showAddNewInfoModalWindow"
+        >
+          + Додати поле
+        </button>
 
       </div>
 
@@ -65,6 +84,7 @@
 
 <script>
 import DeleteContactModalWindow from "../components/DeleteContactModalWindow.vue";
+import AddNewInfoModalWindow from "../components/AddNewInfoModalWindow.vue";
 
 export default {
   name: "AboutContactPage.vue",
@@ -73,11 +93,13 @@ export default {
       contact: '',
       contactKey: '',
       showDeleteModal: false,
+      showAddInfoModal: false,
       modal: "deleteContactInfo",
     }
   },
   components: {
-    DeleteContactModalWindow
+    DeleteContactModalWindow,
+    AddNewInfoModalWindow,
   },
   created() {
     this.contact = this.contacts.find(contact => contact.name == this.$route.params.contactName)
@@ -91,7 +113,7 @@ export default {
     },
     contactName() {
       return this.contact.name
-    }
+    },
   },
   methods: {
     showDeteleContactModalWindow(key) {
@@ -103,6 +125,12 @@ export default {
     },
     goToAllContactsPage() {
       this.$router.push ({name: 'all-contacts'})
+    },
+    showAddNewInfoModalWindow() {
+      this.showAddInfoModal = true
+    },
+    hideAddNewInfoModalWindow() {
+      this.showAddInfoModal = false
     }
   }
 }
@@ -177,8 +205,27 @@ export default {
     padding-top: 5px;
   }
   &__contact-block {
-    height: 230px;
-    overflow: hidden;
+    height: 200px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+  }
+  &__contact-info {
+    margin-left: 5px;
+    margin-bottom: 8px;
+    text-align: left;
+    width: 278px;
+    position: relative;
+  }
+  &__contact-btn-add {
+    cursor: pointer;
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    background-color: #1f5902;
+    color: #fff;
+    font-size: 18px;
+    transition: all .5s;
   }
   &__btn {
     cursor: pointer;
@@ -189,18 +236,12 @@ export default {
     background-color: #1f5902;
     color: #fff;
     font-size: 18px;
-    transition: all .5s;
+    transition: all .4s;
   }
-  &__btn:hover {
-    transform:scale(1.05);
-    transition: all .5s;
-  }
-  &__contact-info {
-    margin-left: 13px;
-    margin-bottom: 8px;
-    text-align: left;
-    width: 300px;
-    position: relative;
+  &__btn:hover,
+  &__contact-btn-add:hover {
+    transform:scale(1.03);
+    transition: all .4s;
   }
 }
 </style>
