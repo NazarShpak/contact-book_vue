@@ -64,8 +64,7 @@ export default new Vuex.Store({
         'e-mail': 'Dimonchik_1997@gmail.com'
       },
 
-    ],
-    contactsCopy: [],
+    ]
   },
   getters: {
     getContacts(state) {
@@ -73,10 +72,6 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    // sortContacts(state) {
-    //   let sortFunction = (a, b) => (a.name > b.name) ? 1 : ((b.name  > a.name) ? -1 : 0)
-    //   return state.contacts.sort(sortFunction)
-    // },
     deleteContact(state, payload) {
       state.contacts.splice(payload, 1)
     },
@@ -94,18 +89,15 @@ export default new Vuex.Store({
     },
     editContactInfo(state, payload) {
       let contact = state.contacts[payload[2]]
-      delete contact[payload[3]]
-      contact[payload[0]] = payload[1]
+      if(payload[0] === payload[3]) {
+        contact[payload[3]] = payload[1]
+      } else {
+        delete contact[payload[3]]
+        contact[payload[0]] = payload[1]
+      }
     }
   },
   actions: {
-    // async sortContacts({ commit }) {
-    //   try {
-    //       commit('sortContacts')
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },
     async changeContact({ commit }, contact) {
       try {
         commit('deleteContact', contact)

@@ -4,11 +4,14 @@
       <h3 class="add-new-contact-modal-window__title">
         Додати новий контакт
       </h3>
+
+      <!-- Hide Add Contact Modal -->
       <span
           class="add-new-contact-modal-window__btn-close"
           @click="hideAddContactModalWindow"
       >
       </span>
+
       <input
           class = "add-new-contact-modal-window__input"
           type = "text"
@@ -25,6 +28,8 @@
           v-model = "phone"
           required
       >
+
+      <!-- Add New Contact -->
       <button
           class="add-new-contact-modal-window__btn"
           :disabled = '!isComplete'
@@ -77,11 +82,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::placeholder {
-  color: #fff;
-  font-size: 14px;
-  line-height: 14px;
-}
 .block {
   height: 225px;
 }
@@ -90,6 +90,7 @@ export default {
   width: 300px;
   background-color: #2a2727;
   position: relative;
+  z-index: 3;
   &__title {
     padding-top: 28px;
     margin-bottom: 35px;

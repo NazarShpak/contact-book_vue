@@ -6,6 +6,7 @@
         Книга контактів
       </h1>
 
+      <!-- Add a new class when opening one of the modals -->
       <div
           class="all-contacts-page__contacts"
           :class="showDeleteModal || showAddModal ? 'all-contacts-page__contacts-hidden' : ''"
@@ -14,12 +15,12 @@
           Всі контакти:
         </h2>
 
+        <!-- Display list of contacts -->
         <div
             class="all-contacts-page__contact"
             v-for="(contact, index) in contacts"
             :key="index"
         >
-
           <router-link
               class="all-contacts-page__contact-info"
               :to = "{ name: 'about-contact', params: {contactName: contact.name, contactIndex: index}}"
@@ -29,35 +30,34 @@
 
           <div
               class="all-contacts-page__contact-btn"
-              @click="showDeteleContactModalWindow(index)"
+              @click="showDeleteContactModalWindow(index)"
           >
           </div>
         </div>
 
-        <!-- Delete Contact Modal Window -->
-
+        <!-- Delete Contact -->
         <delete-contact-modal-window
             class="modal-window"
             v-show="showDeleteModal"
             :index="indexOfDeleteContact"
             :modal="modal"
-            @hideDeleteContactModalWindow="hideDeleteContactModalWindow"
+            @hideDeleteContactModalWindow="showDeleteModal = false"
         >
         </delete-contact-modal-window>
 
-        <!-- Add New Contact Modal Window -->
-
+        <!-- Add New Contact -->
         <add-new-contact-modal-window
             class="modal-window"
             v-show="showAddModal"
-            @hideAddContactModalWindow="hideAddContactModalWindow"
+            @hideAddContactModalWindow="showAddModal = false"
         >
         </add-new-contact-modal-window>
       </div>
 
+      <!-- Show Add Contact Modal -->
       <button
           class="all-contacts-page__btn"
-          @click="showAddContactModalWindow"
+          @click="showAddModal = true"
           :disabled='showAddModal'
           :class="showAddModal ? 'all-contacts-page__btn-disable' : ''"
       >
@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import DeleteContactModalWindow from "../components/DeleteContactModalWindow.vue";
-import AddNewContactModalWindow from "../components/AddNewContactModalWindow.vue";
+import DeleteContactModalWindow from "../components/DeleteContactModalWindow";
+import AddNewContactModalWindow from "../components/AddNewContactModalWindow";
 
 export default {
   name: "AllContactsPage.vue",
@@ -85,27 +85,15 @@ export default {
       modal: "deleteContact"
     }
   },
-  // created() {
-  //   this.$store.dispatch('sortContacts')
-  // },
   computed: {
     contacts() {
       return this.$store.state.contacts
     },
   },
   methods: {
-    showDeteleContactModalWindow(index) {
-      this.showDeleteModal = true
+    showDeleteContactModalWindow(index) {
       this.indexOfDeleteContact = index
-    },
-    hideDeleteContactModalWindow() {
-      this.showDeleteModal = false
-    },
-    showAddContactModalWindow() {
-      this.showAddModal = true
-    },
-    hideAddContactModalWindow() {
-      this.showAddModal = false
+      this.showDeleteModal = true
     }
   }
 }
@@ -120,6 +108,7 @@ export default {
   top: 65px;
   left: 50px;
 }
+
 .all-contacts-page {
   text-align: center;
   &__contacts {

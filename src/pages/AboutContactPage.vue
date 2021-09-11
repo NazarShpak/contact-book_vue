@@ -11,6 +11,8 @@
           Детальна інформація <br> про контакт "{{contactName}}"
         </h3>
         <div class="about-contact-page__contact-block">
+
+          <!-- Display list of contact info -->
           <div
               class="about-contact-page__contact-info"
               v-for="(key, index) in Object.keys(contact)"
@@ -26,11 +28,15 @@
               >
               {{contact[key]}}
             </span>
+
+            <!-- Show Edit Modal -->
             <span
                 class="contact-edit"
                 @click="showEditContactModalWindow(key)"
             >
             </span>
+
+            <!-- Show Delete Modal -->
             <span
                 class="contact-delete"
                 @click="showDeleteContactModalWindow(key)"
@@ -39,8 +45,7 @@
           </div>
         </div>
 
-        <!-- Delete Contact Modal Window -->
-
+        <!-- Delete Contact -->
         <delete-contact-modal-window
             class="modal-window"
             v-if="showDeleteModal"
@@ -48,13 +53,12 @@
             :contactKey="contactKey"
             :contactIndex="contactIndex"
             :modal="modal"
-            @hideDeleteContactModalWindow="hideDeleteContactModalWindow"
+            @hideDeleteContactModalWindow="showDeleteModal = false"
             @goToAllContactsPage="goToAllContactsPage"
         >
         </delete-contact-modal-window>
 
-        <!-- Edit Contact Modal Window-->
-
+        <!-- Edit Contact -->
         <edit-contact-modal-window
             class="modal-window"
             v-if="showEditModal"
@@ -62,29 +66,30 @@
             :contactKey="contactKey"
             :contactValue="contactValue"
             :contactIndex="contactIndex"
-            @hideEditModalWindow="hideEditModalWindow"
+            @hideEditModalWindow="showEditModal = false"
         >
         </edit-contact-modal-window>
 
-        <!-- Add New Info Modal Window -->
-
+        <!-- Add New Info -->
         <add-new-info-modal-window
             class="modal-window"
             v-if="showAddInfoModal"
             :contactIndex="contactIndex"
-            @hideAddNewInfoModalWindow="hideAddNewInfoModalWindow"
+            @hideAddNewInfoModalWindow="showAddInfoModal = false"
         >
         </add-new-info-modal-window>
 
+        <!-- Show Add New Info Modal -->
         <button
             class="about-contact-page__contact-btn-add"
-            @click="showAddNewInfoModalWindow"
+            @click="showAddInfoModal = true"
         >
           + Додати поле
         </button>
 
       </div>
 
+      <!-- Go to All Contacts Page -->
       <button
           class="about-contact-page__btn"
           @click="goToAllContactsPage"
@@ -97,7 +102,7 @@
 </template>
 
 <script>
-import DeleteContactModalWindow from "../components/DeleteContactModalWindow.vue";
+import DeleteContactModalWindow from "../components/DeleteContactModalWindow";
 import AddNewInfoModalWindow from "../components/AddNewInfoModalWindow.vue";
 import EditContactModalWindow from "../components/EditContactModalWindow.vue";
 
@@ -117,7 +122,7 @@ export default {
   components: {
     DeleteContactModalWindow,
     AddNewInfoModalWindow,
-    EditContactModalWindow
+    EditContactModalWindow,
   },
   created() {
     this.contact = this.contacts.find(contact => contact.name == this.$route.params.contactName)
@@ -138,22 +143,10 @@ export default {
       this.showDeleteModal = true
       this.contactKey = key
     },
-    hideDeleteContactModalWindow() {
-      this.showDeleteModal = false
-    },
     showEditContactModalWindow( key) {
       this.showEditModal = true
       this.contactKey = key
       this.contactValue = this.contact[key]
-    },
-    hideEditModalWindow() {
-      this.showEditModal = false
-    },
-    showAddNewInfoModalWindow() {
-      this.showAddInfoModal = true
-    },
-    hideAddNewInfoModalWindow() {
-      this.showAddInfoModal = false
     },
     goToAllContactsPage() {
       this.$router.push ({name: 'all-contacts'})

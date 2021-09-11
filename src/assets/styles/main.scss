@@ -8,12 +8,6 @@ body {
   min-width: 1100px;
 }
 
-//h1, h2, h3, h4 {
-//  font-weight: 700;
-//  color: #333333;
-//  margin-top: 0;
-//}
-
 .container {
   margin: 0 auto;
   background-color: #2a2727;
@@ -46,8 +40,15 @@ body {
 input {
   outline:none;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+::placeholder {
+  color: #fff;
+  font-size: 14px;
+  line-height: 14px;
 }

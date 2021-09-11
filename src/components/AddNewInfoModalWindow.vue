@@ -4,10 +4,14 @@
       <h3 class="add-new-info-modal-window__title">
         Додати нове поле
       </h3>
+
+      <!-- Hide Add New Info Modal -->
       <span
           class="add-new-info-modal-window__btn-close"
+          @click="hideAddNewInfoModalWindow"
       >
       </span>
+
       <input
           class="add-new-info-modal-window__input"
           type="text"
@@ -31,6 +35,7 @@
         Тип поля "значення"
       </h4>
 
+      <!-- Select type for value input -->
       <div class="add-new-info-modal-window__check-block">
         <label class="add-new-info-modal-window__check">
           <input
@@ -57,6 +62,7 @@
         </label>
       </div>
 
+      <!-- Add New Info-->
       <button
           class="add-new-info-modal-window__btn"
           @click="addNewInfo"
@@ -91,6 +97,9 @@ export default {
   methods: {
     addNewInfo() {
       this.$store.commit("addNewInfo", this.getNewCouple)
+      this.hideAddNewInfoModalWindow()
+    },
+    hideAddNewInfoModalWindow() {
       this.$emit('hideAddNewInfoModalWindow')
       this.cleanInputs()
     },
@@ -103,14 +112,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::placeholder {
-  color: #fff;
-  font-size: 14px;
-  line-height: 14px;
-}
 .block {
   height: 300px;
 }
+
 .add-new-info-modal-window {
   height: 340px;
   width: 300px;
@@ -122,6 +127,24 @@ export default {
     font-size: 22px;
     line-height: 22px;
     color: #2a2727;
+  }
+  &__btn-close::before {
+    cursor: pointer;
+    position: absolute;
+    content: "\f00d";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #2a2727;
+    font-size: 20px;
+    line-height: 20px;
+    right: 12px;
+    top: 28px;
+    transition: all .5s;
+  }
+  &__btn-close:hover::before {
+    transform:scale(1.1);
+    transition: all .5s;
+    color: #e50e0e;
   }
   &__input {
     background-color: #2a2727;
