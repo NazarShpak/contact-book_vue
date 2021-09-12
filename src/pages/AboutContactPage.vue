@@ -8,7 +8,7 @@
       </h1>
       <div class="about-contact-page__contact">
         <h3 class="about-contact-page__contact-title">
-          Детальна інформація <br> про контакт "{{contactName}}"
+          Детальна інформація <br> про контакт
         </h3>
         <div class="about-contact-page__contact-block">
 
@@ -19,26 +19,26 @@
               :key="index"
           >
             <span
-                class="contact-key"
+                class="about-contact-page__contact-key"
             >
-              {{key}}:
+              {{ key }}:
             </span> <br>
             <span
-                class="contact-value"
-              >
-              {{contact[key]}}
+                class="about-contact-page__contact-value"
+            >
+              {{ contact[key] }}
             </span>
 
             <!-- Show Edit Modal -->
             <span
-                class="contact-edit"
+                class="about-contact-page__contact-edit"
                 @click="showEditContactModalWindow(key)"
             >
             </span>
 
             <!-- Show Delete Modal -->
             <span
-                class="contact-delete"
+                class="about-contact-page__contact-delete"
                 @click="showDeleteContactModalWindow(key)"
             >
             </span>
@@ -55,6 +55,7 @@
             :modal="modal"
             @hideDeleteContactModalWindow="showDeleteModal = false"
             @goToAllContactsPage="goToAllContactsPage"
+            @makeContactCopy="makeContactCopy"
         >
         </delete-contact-modal-window>
 
@@ -67,6 +68,7 @@
             :contactValue="contactValue"
             :contactIndex="contactIndex"
             @hideEditModalWindow="showEditModal = false"
+            @makeContactCopy="makeContactCopy"
         >
         </edit-contact-modal-window>
 
@@ -76,17 +78,31 @@
             v-if="showAddInfoModal"
             :contactIndex="contactIndex"
             @hideAddNewInfoModalWindow="showAddInfoModal = false"
+            @makeContactCopy="makeContactCopy"
         >
         </add-new-info-modal-window>
 
-        <!-- Show Add New Info Modal -->
-        <button
-            class="about-contact-page__contact-btn-add"
-            @click="showAddInfoModal = true"
-        >
-          + Додати поле
-        </button>
+        <div class="about-contact-page__contact-btns">
 
+          <!-- Rollback last change -->
+          <button
+              class="about-contact-page__contact-btn-cancel"
+              @click="rollbackContact"
+              data-title="Скасувати останню дію"
+              :disabled='!contactCopy'
+              :class="!contactCopy ? 'btn-disable' : ''"
+          >
+          </button>
+
+          <!-- Show Add New Info Modal -->
+          <button
+              class="about-contact-page__contact-btn-add"
+              @click="showAddNewInfoModalWindow"
+              data-title="Додати нове поле"
+          >
+          </button>
+
+        </div>
       </div>
 
       <!-- Go to All Contacts Page -->
@@ -94,7 +110,7 @@
           class="about-contact-page__btn"
           @click="goToAllContactsPage"
       >
-         Вернутись до списку контактів
+        Вернутись до списку контактів
       </button>
 
     </div>
@@ -106,17 +122,19 @@ import DeleteContactModalWindow from "../components/DeleteContactModalWindow";
 import AddNewInfoModalWindow from "../components/AddNewInfoModalWindow.vue";
 import EditContactModalWindow from "../components/EditContactModalWindow.vue";
 
+import extend from 'extend'
+
 export default {
-  name: "AboutContactPage.vue",
+  name: "AboutContactPage",
   data() {
     return {
-      contact: '',
       contactKey: '',
       contactValue: '',
       showDeleteModal: false,
       showAddInfoModal: false,
       showEditModal: false,
       modal: "deleteContactInfo",
+      contactCopy: null,
     }
   },
   components: {
@@ -124,32 +142,42 @@ export default {
     AddNewInfoModalWindow,
     EditContactModalWindow,
   },
-  created() {
-    this.contact = this.contacts.find(contact => contact.name == this.$route.params.contactName)
-  },
   computed: {
+    contact() {
+      return this.contacts[this.contactIndex]
+    },
     contacts() {
       return this.$store.state.contacts
     },
     contactIndex() {
-      return this.contacts.findIndex(contact => contact === this.contact)
+      return this.$route.params.contactIndex
     },
-    contactName() {
-      return this.contact.name
-    },
+    contactData() {
+      return {'contactCopy': this.contactCopy, 'contactIndex': this.contactIndex}
+    }
   },
   methods: {
+    makeContactCopy() {
+      this.contactCopy = extend(true, {}, this.contact)
+    },
+    rollbackContact() {
+      this.$store.commit("rollbackContact", this.contactData)
+      this.contactCopy = null
+    },
     showDeleteContactModalWindow(key) {
       this.showDeleteModal = true
       this.contactKey = key
     },
-    showEditContactModalWindow( key) {
+    showEditContactModalWindow(key) {
       this.showEditModal = true
       this.contactKey = key
       this.contactValue = this.contact[key]
     },
+    showAddNewInfoModalWindow() {
+      this.showAddInfoModal = true
+    },
     goToAllContactsPage() {
-      this.$router.push ({name: 'all-contacts'})
+      this.$router.push({name: 'all-contacts'})
     },
   }
 }
@@ -160,58 +188,12 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 3;
 }
-.contact {
-  &-key {
-    display: inline-block;
-    text-align: left;
-    height: 20px;
-    font-size: 18px;
-    line-height: 18px;
-    font-weight: bold;
-    margin-bottom: 2px;
-  }
-  &-value {
-    display: inline-block;
-    text-align: left;
-    height: 20px;
-    font-size: 18px;
-    line-height: 18px;
-    font-style: oblique;
-  }
-  &-edit,
-  &-delete {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-  &-edit::before,
-  &-delete::before{
-    cursor: pointer;
-    position: absolute;
-    content: "\f4ff";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    color: #2a2727;
-    font-size: 13px;
-    line-height: 13px;
-    right: 40px;
-    top: 3px;
-    transition: all .5s;
-  }
-  &-edit:hover::before,
-  &-delete:hover::before{
-    transform:scale(1.2);
-    transition: all .5s;
-  }
-  &-delete::before {
-    content: "\f503";
-    right: 20px;
-    top: 3px;
-  }
-}
+
 .about-contact-page {
   text-align: center;
+
   &__contact {
     background-color: #fff;
     height: 340px;
@@ -219,33 +201,144 @@ export default {
     margin: 20px auto 20px;
     border-radius: 14px;
     position: relative;
+
+    &-title {
+      padding-top: 5px;
+    }
+
+    &-block {
+      height: 200px;
+      overflow-y: scroll;
+      margin-bottom: 20px;
+    }
+
+    &-info {
+      margin-left: 5px;
+      margin-bottom: 8px;
+      text-align: left;
+      width: 278px;
+      position: relative;
+    }
+
+    &-key {
+      display: inline-block;
+      text-align: left;
+      height: 20px;
+      font-size: 18px;
+      line-height: 18px;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    &-value {
+      display: inline-block;
+      text-align: left;
+      height: 20px;
+      font-size: 18px;
+      line-height: 18px;
+      font-style: oblique;
+    }
+
+    &-edit,
+    &-delete {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    &-edit::before,
+    &-delete::before,
+    &-btn-add::before,
+    &-btn-cancel::before {
+      cursor: pointer;
+      position: absolute;
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      color: #2a2727;
+      font-size: 13px;
+      line-height: 13px;
+      transition: all .5s;
+    }
+
+    &-edit:hover::before,
+    &-delete:hover::before {
+      transform: scale(1.2);
+      transition: all .5s;
+    }
+
+    &-edit::before {
+      content: "\f4ff";
+      right: 40px;
+      top: 3px;
+    }
+
+    &-delete::before {
+      content: "\f503";
+      right: 20px;
+      top: 3px;
+    }
+
+    &-btns {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-btn-add,
+    &-btn-cancel {
+      position: relative;
+      cursor: pointer;
+      height: 35px;
+      transition: all .5s;
+      width: 120px;
+      border: 3px solid #2a2727;
+      border-radius: 15px;
+      box-sizing: border-box;
+    }
+
+    &-btn-add {
+      margin-left: 20px;
+      background-color: #1f5902;
+    }
+
+    &-btn-cancel {
+      background-color: #e50e0e;
+    }
+
+    &-btn-cancel::before,
+    &-btn-add::before {
+      right: 45px;
+      top: 8px;
+      font-size: 28px;
+      color: #2a2727;
+    }
+
+    &-btn-cancel::before {
+      content: "\f359";
+    }
+
+    &-btn-add::before {
+      content: "\f055";
+    }
+
+    &-btn-cancel:hover::after,
+    &-btn-add:hover::after {
+      content: attr(data-title);
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 40px;
+      z-index: 1;
+      background: #5e5a5a;
+      color: #fff;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      padding: 2px;
+      border: 1px solid #2a2727;
+    }
   }
-  &__contact-title {
-    padding-top: 5px;
-  }
-  &__contact-block {
-    height: 200px;
-    overflow-y: scroll;
-    margin-bottom: 20px;
-  }
-  &__contact-info {
-    margin-left: 5px;
-    margin-bottom: 8px;
-    text-align: left;
-    width: 278px;
-    position: relative;
-  }
-  &__contact-btn-add {
-    cursor: pointer;
-    width: 150px;
-    height: 30px;
-    border-radius: 15px;
-    border: none;
-    background-color: #1f5902;
-    color: #fff;
-    font-size: 18px;
-    transition: all .5s;
-  }
+
   &__btn {
     cursor: pointer;
     width: 300px;
@@ -257,10 +350,25 @@ export default {
     font-size: 18px;
     transition: all .4s;
   }
+
   &__btn:hover,
-  &__contact-btn-add:hover {
-    transform:scale(1.03);
+  &__contact-btn-add:hover,
+  &__contact-btn-cancel:hover {
+    transform: scale(1.03);
     transition: all .4s;
   }
+}
+
+.btn-disable {
+  cursor: auto;
+  background-color: #706464;
+}
+
+.btn-disable::before {
+  cursor: auto;
+}
+
+.btn-disable:hover {
+  transform: scale(1);
 }
 </style>

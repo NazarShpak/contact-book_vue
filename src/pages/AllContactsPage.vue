@@ -23,9 +23,9 @@
         >
           <router-link
               class="all-contacts-page__contact-info"
-              :to = "{ name: 'about-contact', params: {contactName: contact.name, contactIndex: index}}"
+              :to="{ name: 'about-contact', params: {contactIndex: index}}"
           >
-            {{ contact.name  ? contact.name :  contact.phone ? contact.phone : `Контакт № ${index + 1}` }}
+            {{ formatContactLinkText(contact) }}
           </router-link>
 
           <div
@@ -38,7 +38,7 @@
         <!-- Delete Contact -->
         <delete-contact-modal-window
             class="modal-window"
-            v-show="showDeleteModal"
+            v-if="showDeleteModal"
             :index="indexOfDeleteContact"
             :modal="modal"
             @hideDeleteContactModalWindow="showDeleteModal = false"
@@ -48,7 +48,7 @@
         <!-- Add New Contact -->
         <add-new-contact-modal-window
             class="modal-window"
-            v-show="showAddModal"
+            v-if="showAddModal"
             @hideAddContactModalWindow="showAddModal = false"
         >
         </add-new-contact-modal-window>
@@ -72,7 +72,7 @@ import DeleteContactModalWindow from "../components/DeleteContactModalWindow";
 import AddNewContactModalWindow from "../components/AddNewContactModalWindow";
 
 export default {
-  name: "AllContactsPage.vue",
+  name: "AllContactsPage",
   components: {
     DeleteContactModalWindow,
     AddNewContactModalWindow
@@ -94,6 +94,15 @@ export default {
     showDeleteContactModalWindow(index) {
       this.indexOfDeleteContact = index
       this.showDeleteModal = true
+    },
+    formatContactLinkText(contact) {
+      if (contact.name) {
+        return contact.name
+      } else if (contact.phone) {
+        return contact.phone
+      } else {
+        return `Контакт № ${this.indexOfDeleteContact + 1}`
+      }
     }
   }
 }
@@ -103,6 +112,7 @@ export default {
 .container {
   position: relative;
 }
+
 .modal-window {
   position: absolute;
   top: 65px;
@@ -111,6 +121,7 @@ export default {
 
 .all-contacts-page {
   text-align: center;
+
   &__contacts {
     background-color: #fff;
     height: 340px;
@@ -118,15 +129,18 @@ export default {
     margin: 0 auto 20px;
     overflow-y: scroll;
   }
+
   &__contacts-hidden {
     overflow: hidden;
   }
+
   &__contacts-title {
     text-align: left;
     color: #2a2727;
     padding: 10px 0 10px 15px;
     margin: 0;
   }
+
   &__contact {
     margin: 4px auto;
     height: 20px;
@@ -138,6 +152,7 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
+
   &__contact-info {
     font-size: 14px;
     font-weight: bold;
@@ -149,19 +164,23 @@ export default {
     text-decoration: none;
     overflow: hidden;
   }
+
   &__contact-info:hover {
     transform: scale(1.04);
     transition: all .5s;
   }
+
   &__contact-btn {
     position: relative;
     transition: all .5s;
   }
+
   &__contact-btn:hover::after {
-    transform:scale(1.06);
+    transform: scale(1.06);
     transition: all .5s;
     color: #e50e0e;
   }
+
   &__contact-btn::after {
     cursor: pointer;
     position: absolute;
@@ -174,6 +193,7 @@ export default {
     top: -10px;
     left: -22px;
   }
+
   &__btn {
     cursor: pointer;
     width: 300px;
@@ -185,16 +205,19 @@ export default {
     font-size: 20px;
     transition: all .5s;
   }
+
   &__btn:hover {
-    transform:scale(1.05);
+    transform: scale(1.05);
     transition: all .5s;
   }
+
   &__btn-disable {
     cursor: auto;
     background-color: #69a854;
   }
+
   &__btn-disable:hover {
-    transform:scale(1);
+    transform: scale(1);
   }
 }
 </style>

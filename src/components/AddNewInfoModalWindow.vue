@@ -17,7 +17,7 @@
           type="text"
           name="contact-key"
           v-model="contactKey"
-          placeholder = "Назва"
+          placeholder="Назва"
           required
       >
       <input
@@ -25,7 +25,7 @@
           :type="inputType"
           name="contact-value"
           v-model="contactValue"
-          placeholder = "Значення"
+          placeholder="Значення"
           required
       >
 
@@ -76,7 +76,7 @@
 
 <script>
 export default {
-  name: "AddNewInfoModalWindow.vue",
+  name: "AddNewInfoModalWindow",
   data() {
     return {
       inputType: 'text',
@@ -90,23 +90,19 @@ export default {
     }
   },
   computed: {
-    getNewCouple() {
-      return [this.contactKey, this.contactValue, this.contactIndex]
+    contactData() {
+      return {'contactKey': this.contactKey, 'contactValue': this.contactValue, 'contactIndex': this.contactIndex}
     },
   },
   methods: {
     addNewInfo() {
-      this.$store.commit("addNewInfo", this.getNewCouple)
+      this.$emit('makeContactCopy')
+      this.$store.commit("addNewInfo", this.contactData)
       this.hideAddNewInfoModalWindow()
     },
     hideAddNewInfoModalWindow() {
       this.$emit('hideAddNewInfoModalWindow')
-      this.cleanInputs()
     },
-    cleanInputs() {
-      this.contactKey = ''
-      this.contactValue = ''
-    }
   }
 }
 </script>
@@ -121,6 +117,7 @@ export default {
   width: 300px;
   background-color: #2a2727;
   position: relative;
+
   &__title {
     padding-top: 28px;
     margin-bottom: 35px;
@@ -128,6 +125,7 @@ export default {
     line-height: 22px;
     color: #2a2727;
   }
+
   &__btn-close::before {
     cursor: pointer;
     position: absolute;
@@ -141,11 +139,13 @@ export default {
     top: 28px;
     transition: all .5s;
   }
+
   &__btn-close:hover::before {
-    transform:scale(1.1);
+    transform: scale(1.1);
     transition: all .5s;
     color: #e50e0e;
   }
+
   &__input {
     background-color: #2a2727;
     border: none;
@@ -158,9 +158,11 @@ export default {
     font-size: 14px;
     line-height: 14px;
   }
+
   &__input + &__input {
     margin-top: 15px;
   }
+
   &__btn {
     cursor: pointer;
     margin-top: 30px;
@@ -172,20 +174,24 @@ export default {
     color: #fff;
     transition: all .5s;
   }
+
   &__btn:hover {
-    transform:scale(1.05);
+    transform: scale(1.05);
     transition: all .5s;
   }
+
   &__subtitle {
     color: #333333;
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 14px;
   }
+
   &__check-block {
     display: flex;
     justify-content: center;
   }
+
   &__check {
     text-align: left;
     position: relative;
@@ -195,9 +201,11 @@ export default {
     line-height: 14px;
     cursor: pointer;
   }
+
   &__check + &__check {
     margin-left: 25px;
   }
+
   &__checkbox {
     position: absolute;
     width: 1px;
@@ -205,6 +213,7 @@ export default {
     overflow: hidden;
     clip: rect(0 0 0 0);
   }
+
   &__checkbox-style {
     position: absolute;
     width: 12px;
@@ -214,6 +223,7 @@ export default {
     margin-left: -20px;
     top: 2px;
   }
+
   &__checkbox:checked + &__checkbox-style::before {
     content: "";
     height: 14px;

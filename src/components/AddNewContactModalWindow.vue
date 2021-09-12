@@ -13,27 +13,27 @@
       </span>
 
       <input
-          class = "add-new-contact-modal-window__input"
-          type = "text"
-          name = "contact-name"
-          placeholder = "Ім'я"
-          v-model = "name"
+          class="add-new-contact-modal-window__input"
+          type="text"
+          name="contact-name"
+          placeholder="Ім'я"
+          v-model="name"
           required
       >
       <input
-          class = "add-new-contact-modal-window__input"
-          type = "number"
-          name = "contact-phone"
-          placeholder = "Номер телефону"
-          v-model = "phone"
+          class="add-new-contact-modal-window__input"
+          type="number"
+          name="contact-phone"
+          placeholder="Номер телефону"
+          v-model="phone"
           required
       >
 
       <!-- Add New Contact -->
       <button
           class="add-new-contact-modal-window__btn"
-          :disabled = '!isComplete'
-          :class = "!isComplete ? 'add-new-contact-modal-window__btn-disable' : ''"
+          :disabled='!isComplete'
+          :class="!isComplete ? 'btn-disable' : ''"
           @click="addNewContact"
       >
         + Додати контакт
@@ -45,9 +45,9 @@
 
 <script>
 export default {
-  name: "AddNewContactModalWindow.vue",
+  name: "AddNewContactModalWindow",
   data() {
-    return{
+    return {
       name: '',
       phone: '',
     }
@@ -85,12 +85,14 @@ export default {
 .block {
   height: 225px;
 }
+
 .add-new-contact-modal-window {
   height: 340px;
   width: 300px;
   background-color: #2a2727;
   position: relative;
   z-index: 3;
+
   &__title {
     padding-top: 28px;
     margin-bottom: 35px;
@@ -98,11 +100,13 @@ export default {
     line-height: 22px;
     color: #2a2727;
   }
+
   &__btn-close {
     position: absolute;
     top: 29px;
     right: 11px;
   }
+
   &__btn-close::before {
     cursor: pointer;
     position: absolute;
@@ -116,11 +120,13 @@ export default {
     top: -2px;
     transition: all .5s;
   }
+
   &__btn-close:hover::before {
-    transform:scale(1.1);
+    transform: scale(1.1);
     transition: all .5s;
     color: #e50e0e;
   }
+
   &__input {
     background-color: #2a2727;
     border: none;
@@ -133,9 +139,11 @@ export default {
     font-size: 14px;
     line-height: 14px;
   }
+
   &__input + &__input {
     margin-top: 15px;
   }
+
   &__btn {
     cursor: pointer;
     margin-top: 30px;
@@ -147,16 +155,19 @@ export default {
     color: #fff;
     transition: all .5s;
   }
+
   &__btn:hover {
-    transform:scale(1.05);
+    transform: scale(1.05);
     transition: all .5s;
   }
-  &__btn-disable {
-    cursor: auto;
-    background-color: #69a854;
-  }
-  &__btn-disable:hover {
-    transform:scale(1);
-  }
+}
+
+.btn-disable {
+  cursor: auto;
+  background-color: #69a854;
+}
+
+.btn-disable:hover {
+  transform: scale(1);
 }
 </style>

@@ -27,6 +27,8 @@
           <block-of-edit-buttons
               class="edit-contact-modal-window__btns"
               @cancelEdit="cancelEdit(editKey)"
+              :editKey="editKey"
+              :copyContactKey="copyContactKey"
           >
           </block-of-edit-buttons>
         </div>
@@ -43,12 +45,14 @@
           <block-of-edit-buttons
               class="edit-contact-modal-window__btns"
               @cancelEdit="cancelEdit(editValue)"
+              :editValue="editValue"
+              :copyContactValue="copyContactValue"
           >
           </block-of-edit-buttons>
         </div>
       </div>
 
-      <!-- Save new values -->
+      <!-- Save edit values -->
       <button
           class="edit-contact-modal-window__btn-save"
           @click="saveNewContactValues"
@@ -64,7 +68,7 @@
 import BlockOfEditButtons from "./BlockOfEditButtons";
 
 export default {
-  name: "EditContactModalWindow.vue",
+  name: "EditContactModalWindow",
   data() {
     return {
       showUndoFirst: true,
@@ -100,25 +104,26 @@ export default {
   },
   computed: {
     contactData() {
-      return [this.editKey , this.editValue, this.contactIndex, this.contactKey]
-    }
+      return {
+        'editKey': this.editKey,
+        'editValue': this.editValue,
+        'contactIndex': this.contactIndex,
+        'contactKey': this.contactKey
+      }
+    },
   },
   methods: {
-    hideEditModalWindow() {
-      this.$emit('hideEditModalWindow')
-    },
     cancelEdit(e) {
       e === this.editKey ? this.editKey = this.copyContactKey : this.editValue = this.copyContactValue
     },
     saveNewContactValues() {
+      this.$emit('makeContactCopy')
       this.$store.commit("editContactInfo", this.contactData)
       this.hideEditModalWindow()
-      this.cleanInputs()
     },
-    cleanInputs() {
-      this.editKey = ''
-      this.editValue =''
-    }
+    hideEditModalWindow() {
+      this.$emit('hideEditModalWindow')
+    },
   }
 }
 </script>
@@ -133,6 +138,7 @@ export default {
   width: 300px;
   background-color: #2a2727;
   position: relative;
+
   &__title {
     padding-top: 15px;
     margin-top: 10px;
@@ -141,15 +147,18 @@ export default {
     line-height: 22px;
     color: #2a2727;
   }
+
   &__input-blocks {
     text-align: left;
   }
+
   &__input-block {
     display: flex;
     justify-content: left;
     align-items: center;
     position: relative;
   }
+
   &__input {
     background-color: #2a2727;
     border: none;
@@ -163,9 +172,11 @@ export default {
     line-height: 14px;
     margin: 10px 8px 10px 10px;
   }
+
   &__btn-close {
     position: relative;
   }
+
   &__btn-close::before {
     cursor: pointer;
     position: absolute;
@@ -179,20 +190,24 @@ export default {
     top: -4px;
     transition: all .5s;
   }
+
   &__btn-close:hover::before {
-    transform:scale(1.2);
+    transform: scale(1.2);
     transition: all .5s;
     color: #e50e0e;
   }
+
   &__btn-close::before {
     content: "\f00d";
     left: 125px;
     top: -59px;
     color: #2a2727;
   }
+
   &__btn-close:hover::before {
     color: #e50e0e;
   }
+
   &__btn-save {
     cursor: pointer;
     margin-top: 19px;
@@ -204,8 +219,9 @@ export default {
     color: #fff;
     transition: all .5s;
   }
+
   &__btn-save:hover {
-    transform:scale(1.05);
+    transform: scale(1.05);
     transition: all .5s;
   }
 }

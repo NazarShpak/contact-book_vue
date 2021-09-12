@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: "DeleteContactModalWindow.vue",
+  name: "DeleteContactModalWindow",
   props: {
     index: {
       type: Number
@@ -50,27 +50,25 @@ export default {
   },
   computed: {
     contactData() {
-      return [this.contactKey, this.contactIndex]
+      return {'contactKey': this.contactKey, 'contactIndex': this.contactIndex}
     }
   },
   methods: {
     deleteContactAndContactInfo() {
-      if(this.modal === "deleteContact") {
+      if (this.modal === "deleteContact") {
         this.deleteContact(this.index)
         this.hideDeleteContactModalWindow()
       } else {
-        if(Object.keys(this.contact).length === 1) {
+        if (Object.keys(this.contact).length === 1) {
           this.deleteContactInfo()
           this.deleteContact(this.contactIndex)
-          this.goToAllContactsPage()
+          this.$emit('goToAllContactsPage')
         } else {
+          this.$emit('makeContactCopy')
           this.deleteContactInfo()
           this.hideDeleteContactModalWindow()
         }
       }
-    },
-    goToAllContactsPage() {
-      this.$emit('goToAllContactsPage')
     },
     hideDeleteContactModalWindow() {
       this.$emit('hideDeleteContactModalWindow')
@@ -89,9 +87,11 @@ export default {
 .block {
   height: 120px;
 }
+
 .btn-yes:hover {
   background-color: #1f5902;
 }
+
 .btn-no:hover {
   background-color: #e50e0e;
 }
@@ -100,6 +100,7 @@ export default {
   height: 340px;
   width: 300px;
   background-color: #2a2727;
+
   &__title {
     padding-top: 15px;
     margin-bottom: 33px;
@@ -107,6 +108,7 @@ export default {
     line-height: 22px;
     color: #2a2727;
   }
+
   &__btn {
     cursor: pointer;
     width: 100px;
@@ -117,11 +119,13 @@ export default {
     color: #fff;
     transition: all .5s;
   }
+
   &__btn:hover {
-    transform:scale(1.05);
+    transform: scale(1.05);
     transition: all .5s;
   }
-  &__btn +  &__btn {
+
+  &__btn + &__btn {
     margin-left: 20px;
   }
 }
