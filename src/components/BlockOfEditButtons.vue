@@ -7,7 +7,7 @@
     <span
         v-if="showUndoBtn"
         class="block-of-edit-buttons__btn-undo"
-        @click="BlockOfEditButtons"
+        @click="blockOfEditButtons"
         data-title="Відмінити редагування"
         v-show="this.copyContactKey !== this.editKey || this.copyContactValue !== this.editValue"
     >
@@ -61,8 +61,10 @@ export default {
       this.showBtnUndo()
       this.$emit('cancelEdit')
     },
-    BlockOfEditButtons() {
-      this.copyContactKey !== this.editKey || this.copyContactValue !== this.editValue ? this.showUndoBtn = false : ''
+    blockOfEditButtons() {
+      if (this.copyContactKey !== this.editKey || this.copyContactValue !== this.editValue) {
+        this.showUndoBtn = false
+      }
     },
     showBtnUndo() {
       this.showUndoBtn = true
